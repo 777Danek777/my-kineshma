@@ -1,0 +1,36 @@
+# Dependencies and generated output
+node_modules/
+.next/
+out/
+dist/
+coverage/
+playwright-report/
+test-results/
+*.tsbuildinfo
+next-env.d.ts
+src/generated/
+
+# Local configuration and secrets
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# Runtime data and backups must not enter version control
+storage/*
+!storage/uploads/
+storage/uploads/*
+!storage/uploads/.gitkeep
+backups/
+*.dump
+*.log
+
+# Local editor and OS files
+.idea/
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+.DS_Store
+Thumbs.db
+Desktop.ini

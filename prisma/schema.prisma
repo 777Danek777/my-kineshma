@@ -1,0 +1,292 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id            String    @id
+  name          String
+  email         String    @unique
+  emailVerified Boolean   @default(false)
+  image         String?
+  role          String    @default("user")
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  sessions      Session[]
+  accounts      Account[]
+  posts         Post[]
+  uploads       MediaAsset[]
+  reviewedSubmissions Submission[]
+}
+
+model Session {
+  id        String   @id
+  token     String   @unique
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  ipAddress String?
+  userAgent String?
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([expiresAt])
+}
+
+model Account {
+  id                    String    @id
+  accountId             String
+  providerId            String
+  userId                String
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  accessToken           String?
+  refreshToken          String?
+  idToken               String?
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+  password              String?
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+
+  @@unique([providerId, accountId])
+  @@index([userId])
+}
+
+model Verification {
+  id         String   @id
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  @@index([identifier])
+}
+
+model RateLimit {
+  id          String @id
+  key         String @unique
+  count       Int
+  lastRequest BigInt
+}
+
+model ActionLimit {
+  key         String   @id
+  windowStart DateTime
+  count       Int
+}
+
+enum PostStatus {
+  DRAFT
+  PUBLISHED
+  UNPUBLISHED
+}
+
+enum PublicationSourceType {
+  COMMUNITY
+  RESIDENT
+  OFFICIAL
+  EXTERNAL
+}
+
+model Category {
+  id        String   @id @default(uuid())
+  name      String   @unique
+  slug      String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  posts     Post[]
+  submissions Submission[]
+  defaultForSettings SiteSettings[]
+}
+
+model SiteSettings {
+  id                        String   @id @default("main")
+  commentsModerationEnabled Boolean  @default(false)
+  postsModerationEnabled    Boolean  @default(true)
+  defaultCategoryId         String?
+  defaultCategory           Category? @relation(fields: [defaultCategoryId], references: [id], onDelete: SetNull)
+  version                   Int      @default(1)
+  updatedAt                 DateTime @updatedAt
+}
+
+model Post {
+  id          String     @id @default(uuid())
+  slug        String     @unique
+  title       String
+  content     String
+  excerpt     String
+  status      PostStatus @default(DRAFT)
+  sourceType  PublicationSourceType @default(COMMUNITY)
+  sourceName  String?    @db.VarChar(100)
+  sourceUrl   String?    @db.VarChar(2048)
+  videoUrl    String?    @db.VarChar(2048)
+  publicAuthorName String? @db.VarChar(60)
+  version     Int        @default(1)
+  categoryId  String
+  category    Category   @relation(fields: [categoryId], references: [id], onDelete: Restrict)
+  authorId    String?
+  author      User?      @relation(fields: [authorId], references: [id], onDelete: Restrict)
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  publishedAt DateTime?
+  images      PostImage[]
+  submission  Submission?
+  likes       Like[]
+  comments    Comment[]
+  commentReceipts CommentReceipt[]
+
+  @@index([status, publishedAt])
+  @@index([categoryId, status])
+}
+
+model MediaAsset {
+  id           String      @id @default(uuid())
+  filename     String      @unique
+  width        Int
+  height       Int
+  byteSize     Int
+  alt          String
+  kind         MediaKind @default(IMAGE)
+  mimeType     String    @default("image/webp")
+  duration     Float?
+  uploadedById String?
+  uploadedBy   User?       @relation(fields: [uploadedById], references: [id], onDelete: Restrict)
+  createdAt    DateTime    @default(now())
+  posts        PostImage[]
+  submissions  SubmissionImage[]
+}
+
+enum MediaKind {
+  IMAGE
+  VIDEO
+}
+
+model PostImage {
+  postId  String
+  mediaId String
+  order   Int
+  post    Post       @relation(fields: [postId], references: [id], onDelete: Cascade)
+  media   MediaAsset @relation(fields: [mediaId], references: [id], onDelete: Restrict)
+  @@id([postId, mediaId])
+  @@unique([postId, order])
+  @@index([mediaId])
+}
+
+enum SubmissionStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+// Minimal receipt is retained after deletion to make network retries idempotent.
+// No sender name, contact or message body is stored in a receipt.
+model SubmissionReceipt {
+  key         String      @id
+  payloadHash String
+  acceptedStatus SubmissionStatus @default(PENDING)
+  publishedSlug String?
+  createdAt   DateTime    @default(now())
+  submission  Submission?
+  @@index([createdAt])
+}
+
+model Submission {
+  id           String           @id @default(uuid())
+  receiptKey   String           @unique
+  receipt      SubmissionReceipt @relation(fields: [receiptKey], references: [key], onDelete: Restrict)
+  title        String
+  content      String
+  senderName   String?
+  publicAuthorName String? @db.VarChar(60)
+  contact      String?
+  anonymous    Boolean          @default(false)
+  status       SubmissionStatus @default(PENDING)
+  version      Int              @default(1)
+  categoryId   String?
+  category     Category?        @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  postId       String?          @unique
+  post         Post?            @relation(fields: [postId], references: [id], onDelete: SetNull)
+  reviewedById String?
+  reviewedBy   User?            @relation(fields: [reviewedById], references: [id], onDelete: SetNull)
+  reviewedAt   DateTime?
+  createdAt    DateTime         @default(now())
+  updatedAt    DateTime         @updatedAt
+  images       SubmissionImage[]
+  @@index([status, createdAt])
+  @@index([categoryId])
+}
+
+model SubmissionImage {
+  submissionId String
+  mediaId      String     @unique
+  order        Int
+  submission   Submission @relation(fields: [submissionId], references: [id], onDelete: Cascade)
+  media        MediaAsset @relation(fields: [mediaId], references: [id], onDelete: Restrict)
+  @@id([submissionId, mediaId])
+  @@unique([submissionId, order])
+}
+
+model Like {
+  id                     String   @id @default(uuid())
+  postId                 String
+  anonymousVisitorIdHash String   @db.VarChar(64)
+  createdAt              DateTime @default(now())
+  post                   Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+  @@unique([postId, anonymousVisitorIdHash])
+}
+
+enum CommentStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+// A minimal receipt prevents a lost response from creating another comment.
+// Kept after moderation/deletion; contains no name, comment text or raw visitor ID.
+model CommentReceipt {
+  key         String   @id
+  postId      String
+  payloadHash String
+  acceptedStatus CommentStatus @default(PENDING)
+  createdAt   DateTime @default(now())
+  post        Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+  comment     Comment?
+  @@index([postId])
+  @@index([createdAt])
+}
+
+model Comment {
+  id          String        @id @default(uuid())
+  postId      String
+  displayName String        @db.VarChar(60)
+  content     String        @db.VarChar(2000)
+  status      CommentStatus @default(PENDING)
+  version     Int           @default(1)
+  receiptKey  String?       @unique
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  parentId    String?
+  parent      Comment?      @relation("CommentReplies", fields: [parentId], references: [id], onDelete: Cascade)
+  replies     Comment[]     @relation("CommentReplies")
+  likes       CommentLike[]
+  post        Post          @relation(fields: [postId], references: [id], onDelete: Cascade)
+  receipt     CommentReceipt? @relation(fields: [receiptKey], references: [key], onDelete: Cascade)
+  @@index([postId, status, createdAt, id])
+  @@index([status, createdAt, id])
+  @@index([parentId, status, createdAt, id])
+}
+
+model CommentLike {
+  id                     String   @id @default(uuid())
+  commentId              String
+  anonymousVisitorIdHash String   @db.VarChar(64)
+  createdAt              DateTime @default(now())
+  comment                Comment @relation(fields: [commentId], references: [id], onDelete: Cascade)
+  @@unique([commentId, anonymousVisitorIdHash])
+}

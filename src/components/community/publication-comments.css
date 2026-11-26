@@ -1,0 +1,96 @@
+.sc-comments {
+  --sc-text: var(--cm-text, #253246);
+  --sc-muted: var(--cm-muted, #67768a);
+  --sc-blue: var(--cm-blue, #2e6fdb);
+  --sc-line: var(--cm-line, rgb(113 136 160 / 19%));
+  --sc-soft: var(--cm-soft, #f2f6fa);
+  --sc-surface: var(--cm-surface, #fff);
+  scroll-margin-top: 148px;
+  min-width: 0;
+  margin: 0;
+  padding: 22px 26px 25px;
+  border-top: 1px solid var(--sc-line);
+  background: transparent;
+  color: var(--sc-text);
+  text-align: left;
+}
+.sc-comments--compact { padding: 17px 22px 21px; }
+.sc-heading { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 7px 14px; margin-bottom: 14px; }
+.sc-heading h2 { display: flex; align-items: center; gap: 8px; margin: 0; color: var(--sc-text); font-size: 16px; font-weight: 750; line-height: 1.5; }
+.sc-total { color: var(--sc-muted); font-size: 13px; font-weight: 500; }
+.sc-refresh,.sc-text-button,.sc-show-all,.sc-more-replies { min-height: 36px; padding: 6px 0; border: 0; border-radius: 4px; background: transparent; color: var(--sc-blue); font: inherit; font-size: 13px; line-height: 1.6; cursor: pointer; }
+.sc-refresh { color: var(--sc-muted); }
+.sc-refresh:hover,.sc-text-button:hover,.sc-show-all:hover,.sc-more-replies:hover { color: #174d9b; text-decoration: underline; text-underline-offset: 3px; }
+.sc-comment-list,.sc-replies { padding: 0; margin: 0; list-style: none; }
+.sc-thread + .sc-thread { margin-top: 16px; }
+.sc-comment { display: flex; align-items: start; gap: 10px; min-width: 0; }
+.sc-comment-avatar { display: grid; place-items: center; flex-shrink: 0; width: 32px; height: 32px; border-radius: 50%; color: #426e94; background: #e5eff7; font-size: 13px; font-weight: 750; }
+.sc-comment-body { flex: 1; min-width: 0; }
+.sc-comment-body header { display: flex; align-items: baseline; flex-wrap: wrap; gap: 3px 10px; margin-bottom: 4px; }
+.sc-comment-body h3 { margin: 0; color: var(--sc-text); font-size: 14px; line-height: 1.6; font-weight: 750; overflow-wrap: anywhere; }
+.sc-comment-body time { color: var(--sc-muted); font-size: 11px; line-height: 1.6; }
+.sc-comment-body > p { margin: 0; color: var(--sc-text); font-size: 15px; line-height: 1.7; white-space: pre-wrap; overflow-wrap: anywhere; }
+.sc-comment-actions { display: flex; align-items: center; gap: 15px; margin-top: 3px; }
+.sc-comment-actions > button { display: inline-flex; align-items: center; justify-content: center; gap: 6px; min-height: 34px; padding: 5px 0; border: 0; border-radius: 4px; background: transparent; color: var(--sc-muted); font: inherit; font-size: 12px; line-height: 1.5; }
+.sc-comment-actions > button:hover { color: var(--sc-blue); }
+.sc-comment-like { margin-left: auto; min-width: 36px; font-variant-numeric: tabular-nums; }
+.sc-comment-like.is-liked { color: var(--sc-blue); }
+.sc-replies { margin: 8px 0 0 42px; padding: 11px 12px; border-left: 2px solid #dce8f2; border-radius: 0 8px 8px 0; background: var(--sc-soft); }
+.sc-replies > li + li { margin-top: 12px; }
+.sc-replies .sc-comment-avatar { width: 26px; height: 26px; font-size: 12px; background: #e0eaf3; }
+.sc-more-replies { margin-left: 42px; }
+.sc-show-all { display: block; width: 100%; margin-top: 12px; text-align: left; font-size: 14px; }
+.sc-inline-error,.sc-comment-body > .sc-inline-error { color: #9a3650; font-size: 12px; line-height: 1.6; margin-top: 7px; }
+.sc-empty,.sc-list-status { margin: 5px 0 14px; color: var(--sc-muted); font-size: 14px; line-height: 1.7; }
+.sc-pagination { display: flex; justify-content: center; align-items: center; gap: 14px; margin-top: 17px; color: var(--sc-muted); font-size: 13px; }
+.sc-pagination button { min-height: 38px; padding: 7px 12px; border: 1px solid var(--sc-line); border-radius: 7px; background: var(--sc-soft); color: var(--sc-blue); font: inherit; font-size: 13px; }
+.sc-pagination button:hover:not(:disabled) { background: #e3edf8; }
+.sc-composer { position: relative; margin-top: 17px; }
+.sc-composer textarea,.sc-composer input:not([name="website"]) { width: 100%; min-width: 0; padding: 10px 12px; border: 1px solid #dce4ed; border-radius: 9px; background: #f5f7fa; color: var(--sc-text); font: inherit; font-size: 15px; line-height: 1.6; outline-offset: 2px; color-scheme: light; }
+.sc-composer textarea { display: block; min-height: 45px; resize: vertical; }
+.sc-composer.is-expanded textarea { background: #fff; min-height: 90px; }
+.sc-composer textarea::placeholder,.sc-composer input::placeholder { color: #748297; }
+.sc-composer textarea:focus-visible,.sc-composer input:focus-visible { outline: 2px solid #80ace8; background: white; }
+.sc-composer [aria-invalid="true"] { border-color: #be6682; }
+.sc-composer-options { padding-top: 12px; }
+.sc-identity-choice { display: inline-flex; align-items: center; max-width: 100%; gap: 3px; padding: 3px; border: 1px solid var(--sc-line); border-radius: 9px; background: var(--sc-soft); }
+.sc-identity-choice button { min-height: 36px; padding: 6px 12px; border: 0; border-radius: 6px; background: transparent; color: var(--sc-muted); font: inherit; font-size: 13px; line-height: 1.5; }
+.sc-identity-choice button:hover:not(:disabled) { color: var(--sc-blue); }
+.sc-identity-choice button[aria-pressed="true"] { background: var(--sc-surface); color: var(--sc-text); box-shadow: 0 1px 3px rgb(0 0 0 / 8%); }
+.sc-comments .sc-identity-choice button:focus-visible { outline: 2px solid var(--sc-blue); outline-offset: 2px; }
+.sc-identity-hint { margin: 7px 0 11px; color: var(--sc-muted); font-size: 12px; line-height: 1.7; }
+.sc-name-optional { color: var(--sc-muted); font-weight: 400; }
+.sc-name-field { max-width: 320px; }
+.sc-name-field label { display: block; margin-bottom: 5px; color: var(--sc-muted); font-size: 12px; }
+.sc-composer .sc-name-field input { padding-block: 8px; }
+.sc-composer-bottom { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; margin-top: 12px; }
+.sc-composer-bottom > span { color: var(--sc-muted); font-size: 12px; line-height: 1.7; }
+.sc-submit { min-height: 40px; padding: 8px 17px; border: 1px solid #2e6fdb; border-radius: 7px; background: var(--sc-blue); color: white; font: inherit; font-size: 14px; font-weight: 650; }
+.sc-submit:hover:not(:disabled) { background: #225bb9; }
+.sc-reply-target { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 9px 11px; margin-bottom: 8px; border-left: 2px solid #7fa8d9; border-radius: 0 6px 6px 0; background: #edf4fb; color: #536d8a; font-size: 12px; }
+.sc-reply-target button { display: grid; place-items: center; min-width: 32px; min-height: 32px; padding: 5px; border: 0; border-radius: 4px; background: transparent; color: #526c88; }
+.sc-reply-target button:hover { background: #dbe9f7; }
+.sc-bot-field { position: absolute; left: -10000px; width: 1px; height: 1px; overflow: hidden; }
+.sc-error { padding: 11px 13px; margin: 10px 0; border: 1px solid #ecd4dc; border-radius: 8px; background: #fff5f7; color: #963d55; font-size: 13px; line-height: 1.7; }
+.sc-field-error { margin: 6px 0 0; color: #963d55; font-size: 12px; line-height: 1.7; }
+.sc-success { display: flex; align-items: start; gap: 7px; margin: 0 0 12px; color: #32745d; font-size: 13px; line-height: 1.7; }
+.sc-success > svg { margin-top: 2px; }
+.sc-comments button:disabled,.sc-comments input:disabled,.sc-comments textarea:disabled { opacity: .55; cursor: default; }
+.sc-comments button:focus-visible { outline: 2px solid #75a5e4; outline-offset: 3px; }
+@media (max-width: 600px) {
+  .sc-comments,.sc-comments--compact { padding: 16px 16px 19px; scroll-margin-top: 100px; }
+  .sc-heading { margin-bottom: 11px; }
+  .sc-comment { gap: 8px; }
+  .sc-comment-avatar { width: 28px; height: 28px; font-size: 12px; }
+  .sc-comment-body > p { font-size: 15px; }
+  .sc-comment-actions > button { min-height: 40px; }
+  .sc-replies { margin-left: 16px; padding: 10px; }
+  .sc-replies .sc-comment-avatar { display: none; }
+  .sc-more-replies { margin-left: 26px; min-height: 40px; }
+  .sc-text-count { display: none; }
+  .sc-name-field { max-width: none; }
+  .sc-identity-choice button { min-height: 40px; }
+  .sc-composer textarea,.sc-composer input:not([name="website"]) { font-size: 16px; }
+  .sc-composer-bottom > span { flex: 1; }
+  .sc-submit { min-height: 44px; padding-inline: 15px; }
+}

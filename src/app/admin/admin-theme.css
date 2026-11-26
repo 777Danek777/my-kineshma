@@ -1,0 +1,207 @@
+/* Navigation is the only blurred administrative surface. Reading and editing
+   surfaces stay opaque; root theme attributes also cover the standalone login. */
+:root .adm-root,
+:root .adm-login {
+  --adm-bg: var(--theme-bg, #eef2f5);
+  --adm-panel: var(--theme-surface, #fff);
+  --adm-border: var(--theme-line, #dce5ee);
+  --adm-subtle: var(--theme-muted, #67768a);
+  --adm-accent: var(--theme-accent, #2e6fdb);
+}
+
+:root .adm-sidebar,
+:root .adm-topbar {
+  background: var(--theme-glass, #ffffffd9);
+  border-color: var(--theme-glass-line, #ffffffc4);
+  box-shadow: inset 0 1px 0 var(--adm-glass-highlight, #ffffffa6), var(--theme-shadow, 0 6px 24px #263e5510);
+  -webkit-backdrop-filter: blur(16px) saturate(1.15);
+  backdrop-filter: blur(16px) saturate(1.15);
+}
+
+:root[data-theme="dark"] .adm-root,
+:root[data-theme="dark"] .adm-login {
+  /* CSS Modules consume these only in dark mode, preserving their exact light
+     colors through the fallbacks in comments-manager.module.css. */
+  --adm-theme-scheme: dark;
+  --adm-glass-highlight: #ffffff14;
+  --adm-theme-text: var(--theme-text, #e6edf6);
+  --adm-theme-muted: var(--theme-muted, #a0aec0);
+  --adm-theme-accent: var(--theme-accent, #94baff);
+  --adm-theme-accent-soft: var(--theme-accent-soft, #253b59);
+  --adm-theme-surface: var(--theme-surface, #1b2430);
+  --adm-theme-soft: var(--theme-surface-soft, #222e3c);
+  --adm-theme-line: var(--theme-line, #384659);
+  --adm-theme-shadow-color: #00000050;
+  --adm-theme-backdrop: #040a12bd;
+  --adm-theme-warning-text: #e9bf76;
+  --adm-theme-warning-bg: #342c20;
+  --adm-theme-warning-line: #685332;
+  --adm-theme-success-text: #96dab7;
+  --adm-theme-success-bg: #1b382e;
+  --adm-theme-success-line: #315c49;
+  --adm-theme-danger-text: #efadb9;
+  --adm-theme-danger-bg: #3a2630;
+  --adm-theme-danger-line: #694250;
+  --adm-theme-info-text: #afcef7;
+  --adm-theme-info-bg: #22354c;
+  --adm-theme-info-line: #3a5678;
+  color: var(--adm-theme-text);
+  color-scheme: dark;
+  background: var(--adm-bg);
+}
+
+:root[data-theme="dark"] .adm-login {
+  background: radial-gradient(ellipse at 50% 0%, #26415c48, transparent 65%), var(--adm-bg);
+}
+:root[data-theme="dark"] .adm-root :is(.adm-panel, .adm-stat),
+:root[data-theme="dark"] .adm-login .adm-login-card {
+  background: var(--adm-panel);
+  color: var(--adm-theme-text);
+  border-color: var(--adm-border);
+  box-shadow: 0 5px 22px #00000016;
+}
+:root[data-theme="dark"] .adm-login .adm-login-card { box-shadow: 0 20px 60px #00000030; }
+:root[data-theme="dark"] .adm-root :is(h1, h2, h3),
+:root[data-theme="dark"] .adm-login h1,
+:root[data-theme="dark"] .adm-root .adm-article-preview h2,
+:root[data-theme="dark"] .adm-root :is(.adm-brand, .adm-stat strong, .adm-sidebar-note strong, .adm-user strong, .adm-post-cell strong, .adm-recent-copy strong, .adm-category-info strong, .adm-steps strong, .adm-editor-tip strong, .adm-setting-switch strong),
+:root[data-theme="dark"] .adm-login .adm-login-brand {
+  color: var(--adm-theme-text);
+}
+:root[data-theme="dark"] .adm-root :is(.adm-brand-caption, .adm-nav-caption, .adm-user small, .adm-logout, .adm-protected, .adm-footer, .adm-breadcrumb, .adm-breadcrumb span, .adm-description, .adm-empty p, .adm-muted, .adm-steps p, .adm-help-foot, .adm-help-foot p, .adm-aside-note, .adm-editor-tip p, .adm-upload-note, .adm-publish-explanation, .adm-stat > div, .adm-stat p, .adm-recent-copy > span, .adm-post-cell small, .adm-table-date, .adm-category-info span, .adm-pagination, .adm-field-hint, .adm-word-count, .adm-upload-zone > span:last-child, .adm-save-details time, .adm-save-indicator, .adm-loading, .adm-sidebar-note p, .adm-setting-card > p, .adm-settings-footer > p),
+:root[data-theme="dark"] .adm-login :is(.adm-description, .adm-eyebrow, .adm-login-help, .adm-login-back, .adm-field-hint) {
+  color: var(--adm-theme-muted);
+}
+:root[data-theme="dark"] .adm-root :is(.adm-field, .adm-current-status > span:first-child, .adm-save-details > span),
+:root[data-theme="dark"] .adm-login .adm-field {
+  color: var(--adm-theme-text);
+}
+:root[data-theme="dark"] .adm-root :is(.adm-nav a, .adm-site-link) { color: var(--adm-theme-muted); }
+:root[data-theme="dark"] .adm-root :is(.adm-nav a:hover, .adm-nav a.is-active, .adm-site-link:hover) {
+  color: var(--adm-theme-accent);
+  background: var(--adm-theme-accent-soft);
+}
+:root[data-theme="dark"] .adm-root :is(.adm-sidebar-note, .adm-setting-state, .adm-editor-tip) {
+  background: var(--adm-theme-soft);
+  border-color: var(--adm-border);
+  color: var(--adm-theme-muted);
+}
+:root[data-theme="dark"] .adm-root :is(.adm-avatar, .adm-menu-button, .adm-post-thumb, .adm-recent-icon, .adm-category-icon, .adm-empty-icon, .adm-steps li > span, .adm-count, .adm-preview-category, .adm-setting-icon),
+:root[data-theme="dark"] .adm-login .adm-login-lock {
+  color: var(--adm-theme-accent);
+  background: var(--adm-theme-accent-soft);
+  border-color: var(--adm-border);
+}
+:root[data-theme="dark"] .adm-root :is(.adm-sidebar-note a, .adm-sidebar-note-icon, .adm-stat svg, .adm-text-link, .adm-editor-back, .adm-manage-categories, .adm-eyebrow, .adm-help-kicker, .adm-upload-icon, .adm-upload-zone strong, .adm-icon-button, .adm-required),
+:root[data-theme="dark"] .adm-login .adm-password-wrap button {
+  color: var(--adm-theme-accent);
+}
+:root[data-theme="dark"] .adm-root :is(.adm-logout:hover, .adm-text-link:hover, .adm-editor-back:hover, .adm-post-cell:hover strong, .adm-recent:hover strong) { color: var(--adm-theme-text); }
+:root[data-theme="dark"] .adm-root :is(.adm-stat:hover, .adm-posts-table tbody tr:hover, .adm-recent:hover, .adm-category-row:hover, .adm-icon-button:hover:not(:disabled)) {
+  background: var(--adm-theme-soft);
+  border-color: var(--adm-border);
+}
+:root[data-theme="dark"] .adm-root :is(.adm-panel-heading, .adm-list-toolbar, .adm-help-foot, .adm-recent, .adm-category-row, .adm-pagination, .adm-current-status, .adm-publish-actions, .adm-save-details, .adm-sidebar-bottom, .adm-footer, .adm-setting-switch),
+:root[data-theme="dark"] .adm-root :is(.adm-posts-table th, .adm-posts-table td),
+:root[data-theme="dark"] .adm-login .adm-login-help { border-color: var(--adm-border); }
+:root[data-theme="dark"] .adm-root .adm-posts-table th { background: var(--adm-theme-soft); color: var(--adm-theme-muted); }
+
+/* Form controls and their native dropdown/autofill states remain legible. */
+:root[data-theme="dark"] .adm-root .adm-field :is(input, textarea, select),
+:root[data-theme="dark"] .adm-login .adm-field input {
+  color: var(--adm-theme-text);
+  background: var(--adm-theme-soft);
+  border-color: var(--adm-border);
+  caret-color: var(--adm-theme-text);
+}
+:root[data-theme="dark"] .adm-root .adm-field :is(input, textarea)::placeholder,
+:root[data-theme="dark"] .adm-login .adm-field input::placeholder,
+:root[data-theme="dark"] .adm-root .adm-search input::placeholder { color: var(--adm-theme-muted); opacity: .8; }
+:root[data-theme="dark"] .adm-root .adm-field :is(input, textarea, select):focus,
+:root[data-theme="dark"] .adm-login .adm-field input:focus {
+  border-color: var(--adm-theme-accent);
+  box-shadow: 0 0 0 3px #94baff20;
+}
+:root[data-theme="dark"] .adm-root .adm-field :is(input, textarea, select)[aria-invalid="true"],
+:root[data-theme="dark"] .adm-login .adm-field input[aria-invalid="true"] { border-color: var(--adm-theme-danger-line); }
+:root[data-theme="dark"] .adm-root input:-webkit-autofill,
+:root[data-theme="dark"] .adm-login input:-webkit-autofill {
+  -webkit-text-fill-color: var(--adm-theme-text);
+  -webkit-box-shadow: 0 0 0 1000px var(--adm-theme-soft) inset;
+  caret-color: var(--adm-theme-text);
+}
+:root[data-theme="dark"] .adm-root option { background: var(--adm-theme-surface); color: var(--adm-theme-text); }
+:root[data-theme="dark"] .adm-root .adm-search { background: var(--adm-theme-soft); border-color: var(--adm-border); color: var(--adm-theme-muted); }
+:root[data-theme="dark"] .adm-root .adm-search input { background: transparent; color: var(--adm-theme-text); }
+:root[data-theme="dark"] .adm-root :is(.adm-search-submit, .adm-row-status) { background: var(--adm-theme-accent-soft); color: var(--adm-theme-accent); border-color: var(--adm-border); }
+:root[data-theme="dark"] .adm-root :is(.adm-tabs, .adm-editor-toggle) { background: var(--adm-theme-soft); border-color: var(--adm-border); }
+:root[data-theme="dark"] .adm-root :is(.adm-tabs button, .adm-editor-toggle button) { color: var(--adm-theme-muted); }
+:root[data-theme="dark"] .adm-root :is(.adm-tabs button.is-active, .adm-editor-toggle button.is-active) { background: var(--adm-theme-accent-soft); color: var(--adm-theme-accent); box-shadow: none; }
+:root[data-theme="dark"] .adm-root .adm-setting-switch input { accent-color: var(--adm-theme-accent); }
+
+:root[data-theme="dark"] .adm-root .adm-button,
+:root[data-theme="dark"] .adm-login .adm-button {
+  background: var(--adm-button-background, var(--adm-theme-soft));
+  border-color: var(--adm-button-line, var(--adm-border));
+  color: var(--adm-button-text, var(--adm-theme-text));
+}
+:root[data-theme="dark"] .adm-root .adm-button:hover:not(:disabled),
+:root[data-theme="dark"] .adm-login .adm-button:hover:not(:disabled) { background: var(--adm-button-background, var(--adm-theme-accent-soft)); border-color: var(--adm-button-line, var(--adm-theme-accent)); }
+:root[data-theme="dark"] .adm-root .adm-button-primary,
+:root[data-theme="dark"] .adm-login .adm-button-primary { background: #326fd0; border-color: #4784e1; color: #fff; }
+:root[data-theme="dark"] .adm-root .adm-button-primary:hover:not(:disabled),
+:root[data-theme="dark"] .adm-login .adm-button-primary:hover:not(:disabled) { background: #3c7bdf; border-color: #629bea; color: #fff; }
+:root[data-theme="dark"] .adm-root :is(.adm-upload-zone, .adm-upload-grid) { background: var(--adm-theme-soft); border-color: var(--adm-border); }
+:root[data-theme="dark"] .adm-root .adm-upload-zone:hover { background: var(--adm-theme-accent-soft); border-color: var(--adm-theme-accent); }
+:root[data-theme="dark"] .adm-root .adm-preview-content { color: var(--adm-theme-text); }
+:root[data-theme="dark"] .adm-root .adm-spinner { border-color: var(--adm-border); border-top-color: var(--adm-theme-accent); }
+:root[data-theme="dark"] .adm-root .adm-overlay { background: var(--adm-theme-backdrop); }
+
+/* Status is conveyed by both its label and color. */
+:root[data-theme="dark"] .adm-root :is(.adm-status-draft, .adm-submission-status-pending) { color: var(--adm-theme-warning-text); background: var(--adm-theme-warning-bg); border-color: var(--adm-theme-warning-line); }
+:root[data-theme="dark"] .adm-root :is(.adm-status-published, .adm-submission-status-approved, .adm-notice-success),
+:root[data-theme="dark"] .adm-login .adm-notice-success { color: var(--adm-theme-success-text); background: var(--adm-theme-success-bg); border-color: var(--adm-theme-success-line); }
+:root[data-theme="dark"] .adm-root :is(.adm-status-unpublished, .adm-submission-status-rejected) { color: #c2b4d6; background: #302a3b; border-color: #52455e; }
+:root[data-theme="dark"] .adm-root .adm-notice-info,
+:root[data-theme="dark"] .adm-login .adm-notice-info { color: var(--adm-theme-info-text); background: var(--adm-theme-info-bg); border-color: var(--adm-theme-info-line); }
+:root[data-theme="dark"] .adm-root :is(.adm-notice-error, .adm-submission-reject),
+:root[data-theme="dark"] .adm-login .adm-notice-error { color: var(--adm-theme-danger-text); background: var(--adm-theme-danger-bg); border-color: var(--adm-theme-danger-line); }
+:root[data-theme="dark"] .adm-root :is(.adm-sidebar-error, .adm-field-error, .adm-danger-text, .adm-delete-post),
+:root[data-theme="dark"] .adm-login .adm-field-error { color: var(--adm-theme-danger-text); }
+:root[data-theme="dark"] .adm-root :is(.adm-danger-text:hover:not(:disabled), .adm-delete-post:hover:not(:disabled)) { color: #ffd1d9; background: var(--adm-theme-danger-bg); }
+:root[data-theme="dark"] .adm-root .adm-save-indicator.is-dirty { color: var(--adm-theme-warning-text); }
+
+/* Higher specificity than the nested submissions route stylesheet. */
+:root[data-theme="dark"] .adm-root .adm-submission-info { background: var(--adm-theme-soft); border-color: var(--adm-border); }
+:root[data-theme="dark"] .adm-root :is(.adm-submission-info strong, .adm-submission-copy > strong, .adm-submission-sender dd) { color: var(--adm-theme-text); }
+:root[data-theme="dark"] .adm-root :is(.adm-submission-info p, .adm-submission-excerpt, .adm-submission-counter > span, .adm-submission-author, .adm-submission-row-meta time, .adm-submission-photo-note, .adm-submission-sender dt, .adm-submission-sender p, .adm-submission-delete p) { color: var(--adm-theme-muted); }
+:root[data-theme="dark"] .adm-root :is(.adm-submission-info-icon, .adm-submission-thumb, .adm-submission-photo-count) { color: var(--adm-theme-accent); background: var(--adm-theme-accent-soft); }
+:root[data-theme="dark"] .adm-root :is(.adm-submission-counter, .adm-submission-sender p, .adm-submission-photo) { border-color: var(--adm-border); }
+:root[data-theme="dark"] .adm-root :is(.adm-submission-row:hover, .adm-submission-photo) { background: var(--adm-theme-soft); }
+:root[data-theme="dark"] .adm-root :is(.adm-submission-open, .adm-submission-private, .adm-submission-photo-actions button) { color: var(--adm-theme-accent); }
+:root[data-theme="dark"] .adm-root .adm-submission-photo-actions button.adm-danger-text { color: var(--adm-theme-danger-text); }
+:root[data-theme="dark"] .adm-root .adm-submission-photo-actions button:hover:not(:disabled) { background: var(--adm-theme-accent-soft); }
+:root[data-theme="dark"] .adm-root :is(a, button, summary):focus-visible,
+:root[data-theme="dark"] .adm-login :is(a, button):focus-visible { outline-color: var(--adm-theme-accent); }
+
+@media (max-width: 760px) {
+  :root .adm-sidebar,
+  :root .adm-topbar {
+    -webkit-backdrop-filter: blur(10px) saturate(1.1);
+    backdrop-filter: blur(10px) saturate(1.1);
+  }
+}
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  :root .adm-sidebar,
+  :root .adm-topbar { background: var(--theme-surface, #fff); border-color: var(--theme-line, #dce5ee); }
+}
+@media (prefers-reduced-transparency: reduce) {
+  :root .adm-sidebar,
+  :root .adm-topbar {
+    background: var(--theme-surface, #fff);
+    border-color: var(--theme-line, #dce5ee);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+  :root .adm-root dialog::backdrop { background: var(--theme-bg, #eef2f5); -webkit-backdrop-filter: none; backdrop-filter: none; }
+}

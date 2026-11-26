@@ -1,0 +1,63 @@
+{
+  "name": "my-kineshma",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev --hostname 127.0.0.1 --port 3000",
+    "build": "prisma generate && next build",
+    "start": "next start --hostname 127.0.0.1 --port 3000",
+    "lint": "eslint . --max-warnings=0",
+    "typecheck": "next typegen && tsc --noEmit",
+    "db:stop": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File scripts/postgres-stop.ps1",
+    "test:admin": "tsx scripts/test-admin.ts",
+    "db:seed": "prisma db seed",
+    "admin:create": "tsx scripts/create-admin.ts",
+    "admin:reset": "tsx scripts/reset-admin.ts",
+    "db:migrate": "prisma migrate deploy",
+    "db:generate": "prisma generate",
+    "db:start": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File scripts/postgres-start.ps1",
+    "test:submissions": "tsx scripts/test-submissions.ts",
+    "test:metadata": "tsx scripts/test-publication-metadata.ts",
+    "test:social": "tsx scripts/test-social.ts",
+    "test:composer": "tsx scripts/test-composer.ts",
+    "test:display-name": "tsx --test scripts/test-display-name.ts",
+    "test:theme": "tsx --test scripts/test-theme.ts"
+  },
+  "engines": {
+    "node": ">=24.0.0 <25"
+  },
+  "dependencies": {
+    "@better-auth/prisma-adapter": "1.7.28",
+    "@fontsource-variable/manrope": "5.3.0",
+    "@prisma/adapter-pg": "7.10.1",
+    "@prisma/client": "7.10.1",
+    "better-auth": "1.7.28",
+    "dotenv": "18.0.10",
+    "mediainfo.js": "0.3.9",
+    "next": "16.4.6",
+    "pg": "8.23.1",
+    "react": "19.3.1",
+    "react-dom": "19.3.1",
+    "server-only": "0.0.1",
+    "sharp": "0.35.5",
+    "zod": "4.6.7"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "4.3.5",
+    "@types/node": "24.19.4",
+    "@types/pg": "8.23.1",
+    "@types/react": "19.3.3",
+    "@types/react-dom": "19.3.0",
+    "eslint": "10.15.0",
+    "eslint-config-next": "16.4.6",
+    "postcss": "8.5.33",
+    "prisma": "7.10.1",
+    "tailwindcss": "4.3.5",
+    "tsx": "4.23.15",
+    "typescript": "5.9.3"
+  },
+  "overrides": {
+    "effect": "3.22.5"
+  },
+  "type": "module"
+}
