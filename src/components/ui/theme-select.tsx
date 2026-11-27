@@ -137,7 +137,10 @@ export function ThemeSelect({ id, name, form, value, options, onValueChange, dis
       if (target instanceof Node && !trigger.current?.contains(target) && !list.current?.contains(target)) dismiss();
     };
     const scroll = (event: Event) => {
-      if (!(event.target instanceof Node) || !list.current?.contains(event.target)) dismiss();
+      // Only scroll containers that move the trigger invalidate its placement.
+      // Sibling carousels and the popup's own scroll must leave the menu open.
+      const target = event.target;
+      if (target === document || target === window || (target instanceof Element && trigger.current && target.contains(trigger.current))) dismiss();
     };
     document.addEventListener("pointerdown", outside);
     document.addEventListener("focusin", outside);

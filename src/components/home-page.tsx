@@ -7,6 +7,9 @@ import { Brand } from "@/components/brand";
 import { Icon } from "@/components/ui/icon";
 import { ThemeSelect } from "@/components/ui/theme-select";
 import { CommunityHeader } from "@/components/community/community-header";
+import { CategoryCarousel } from "@/components/community/category-carousel";
+import { CommunitySidebar } from "@/components/community/community-sidebar";
+import type { FeedView } from "@/components/community/feed-navigation";
 import { CommunityFooter } from "@/components/community/community-footer";
 import { RiverLines } from "@/components/community/river-lines";
 import { SocialPostCard } from "@/components/community/post-card";
@@ -144,6 +147,7 @@ export function HomePage({
   initialArticleSlug,
   initialCategory,
   initialQuery = "",
+  initialView = "all",
 }: {
   articles: HomeArticle[];
   categories: string[];
@@ -151,15 +155,16 @@ export function HomePage({
   initialArticleSlug?: string;
   initialCategory?: string;
   initialQuery?: string;
+  initialView?: FeedView;
 }) {
   const [category, setCategory] = useState<string | null>(
-    initialCategory && categoryNames.includes(initialCategory)
+    initialView === "events" && categoryNames.includes("Афиша") ? "Афиша" : initialCategory && categoryNames.includes(initialCategory)
       ? initialCategory
       : null,
   );
   const [query, setQuery] = useState(initialQuery);
-  const [mediaFilter, setMediaFilter] = useState<MediaFilter>("all");
-  const [source, setSource] = useState<PublicationSourceType | "ALL">("ALL");
+  const [mediaFilter, setMediaFilter] = useState<MediaFilter>(initialView === "photos" ? "photos" : "all");
+  const [source, setSource] = useState<PublicationSourceType | "ALL">(initialView === "resident" ? "RESIDENT" : "ALL");
   const [sort, setSort] = useState("newest");
   const [visible, setVisible] = useState(5);
   const [modal, setModal] = useState<Modal | null>(() => {
@@ -240,7 +245,7 @@ export function HomePage({
     setMediaFilter("all");
     setVisible(5);
   }
-  function quickFilter(kind: "all" | "photos" | "resident" | "events") {
+  function quickFilter(kind: FeedView) {
     reset();
     if (kind === "photos") setMediaFilter("photos");
     if (kind === "resident") setSource("RESIDENT");
@@ -261,8 +266,8 @@ export function HomePage({
       )}
       <CommunityHeader
         categories={categories}
-        activeCategory={category}
-        onCategory={chooseCategory}
+        activeView={normalized ? null : !category && source === "ALL" ? (mediaFilter === "photos" ? "photos" : mediaFilter === "all" ? "all" : null) : !category && mediaFilter === "all" && source === "RESIDENT" ? "resident" : category === "Афиша" && mediaFilter === "all" && source === "ALL" ? "events" : null}
+        onView={quickFilter}
         query={query}
         onQuery={(value) => {
           setQuery(value);
@@ -297,44 +302,6 @@ export function HomePage({
           </span>
         </section>
 
-        <section className="cm-pulse cm-glass" aria-labelledby="pulse-title">
-          <div className="cm-pulse-name">
-            <svg viewBox="0 0 32 32" fill="none" aria-hidden="true">
-              <path d="M2 18h7l4-9 6 15 4-6h7" />
-            </svg>
-            <div>
-              <h2 id="pulse-title">Пульс города</h2>
-              <p>Выберите, что вам близко</p>
-            </div>
-          </div>
-          <div className="cm-pulse-links">
-            <button onClick={() => quickFilter("all")}>
-              <Icon name="message" size={17} />
-              Вся лента
-            </button>
-            <button onClick={() => quickFilter("photos")}>
-              <Icon name="camera" size={17} />В объективе
-            </button>
-            <button onClick={() => quickFilter("resident")}>
-              <Icon name="pin" size={17} />
-              От жителей
-            </button>
-            {categories.includes("Афиша") && (
-              <button onClick={() => quickFilter("events")}>
-                <Icon name="sun" size={17} />
-                Куда сходить
-              </button>
-            )}
-          </div>
-          <a
-            className="cm-pulse-suggest"
-            href="/suggest-news"
-            aria-label="Предложить публикацию"
-          >
-            <Icon name="plus" size={20} />
-          </a>
-        </section>
-
         <div className="cm-columns">
           <section
             ref={feedRef}
@@ -363,29 +330,7 @@ export function HomePage({
               </div>
             </div>
             <div className="cm-filters cm-glass">
-              <div
-                className="cm-category-scroll"
-                role="group"
-                aria-label="Темы публикаций"
-              >
-                <button
-                  className={!category ? "is-active" : ""}
-                  aria-pressed={!category}
-                  onClick={() => chooseCategory(null, false)}
-                >
-                  Всё
-                </button>
-                {categories.map((name) => (
-                  <button
-                    key={name}
-                    aria-pressed={category === name}
-                    className={category === name ? "is-active" : ""}
-                    onClick={() => chooseCategory(name, false)}
-                  >
-                    {name}
-                  </button>
-                ))}
-              </div>
+              <CategoryCarousel categories={categories} activeCategory={category} onCategory={name => chooseCategory(name, false)} />
               <div className="cm-filter-bottom">
                 <div
                   className="cm-media-filters"
@@ -500,7 +445,7 @@ export function HomePage({
             )}
           </section>
 
-          <aside className="cm-sidebar" aria-label="Городское сообщество">
+          <CommunitySidebar>
             <section className="cm-vk-card cm-glass">
               <div className="cm-sidebar-icon">
                 <Icon name="vk" size={28} />
@@ -608,7 +553,7 @@ export function HomePage({
               </a>
               <span>Моя Кинешма · Город. Люди. События.</span>
             </div>
-          </aside>
+          </CommunitySidebar>
         </div>
       </main>
       <CommunityFooter
